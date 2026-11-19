@@ -18,5 +18,5 @@ rule annotate_vep:
             --dir_cache /vep_cache \
             --cache_version {params.version} \
             --assembly {params.assembly} \
-            --symbol --hgvs --numbers --canonical --protein
+            --symbol --numbers --canonical --protein
         """

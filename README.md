@@ -26,7 +26,7 @@ A `results/` folder appears:
 results/
 ├── my_variants.filtered.vcf    # VCF after quality filtering
 ├── my_variants.variants.tsv    # one row per variant
-├── my_variants.vep.tsv         # gene / consequence / HGVS from Ensembl VEP
+├── my_variants.vep.tsv         # gene / consequence / protein change from Ensembl VEP
 └── my_variants.summary.md      # one-page human-readable report
 ```
 
@@ -80,7 +80,7 @@ my_variants.vcf
       │
       ├─ 1. filter      bcftools view    → keep QUAL ≥ 20, FILTER = PASS
       │
-      ├─ 2. annotate    Ensembl VEP      → gene, consequence, HGVS
+      ├─ 2. annotate    Ensembl VEP      → gene, consequence, protein change
       │
       ├─ 3. table       bcftools query   → flat TSV
       │
@@ -194,6 +194,10 @@ vcf-annotate-smk/
 ## Known limitations
 
 - Human **GRCh38** by default; other assemblies need their own VEP cache.
+  The wrapper checks the VCF header and stops if it says GRCh37/hg19.
+- HGVS notation is **not** produced: Ensembl VEP needs an extra reference
+  FASTA file for that. Gene symbol, consequence, cDNA/protein positions and
+  amino-acid changes come from the cache.
 - It is a thin workflow wrapper, not a new variant-effect algorithm.
 - `--no-annotate` gives no biological annotation — it is for demos and CI.
 - Pathogenicity and population frequencies, if needed, come from VEP's own

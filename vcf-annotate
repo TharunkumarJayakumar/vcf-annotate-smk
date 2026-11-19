@@ -49,6 +49,21 @@ if [[ ! -f "$INPUT" ]]; then
   exit 1
 fi
 
+# Annotation is only meaningful if the VCF coordinates match the cache build.
+if [[ "$MODE" == "vep" ]]; then
+  REF_LINE="$(grep -m1 '^##reference=' "$INPUT" || true)"
+  REF_LOWER="$(printf '%s' "$REF_LINE" | tr '[:upper:]' '[:lower:]')"
+  case "$REF_LOWER" in
+    *grch38*|*hg38*) ;;
+    *grch37*|*hg19*|*ncbi36*)
+      echo "ERROR: VCF header says GRCh37/hg19 but the cache is GRCh38." >&2
+      echo "       Use a GRCh38 VCF, change the cache, or use --no-annotate." >&2
+      exit 1 ;;
+    *)
+      echo "WARNING: no recognisable ##reference in VCF header; assuming GRCh38." >&2 ;;
+  esac
+fi
+
 INPUT_ABS="$(python -c 'import os,sys; print(os.path.abspath(sys.argv[1]))' "$INPUT")"
 mkdir -p "$OUT"
 OUT_ABS="$(python -c 'import os,sys; print(os.path.abspath(sys.argv[1]))' "$OUT")"
