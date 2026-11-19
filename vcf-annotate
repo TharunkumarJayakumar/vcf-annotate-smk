@@ -3,6 +3,7 @@
 set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
+PYTHON="$(command -v python || command -v python3)"
 INPUT=""
 OUT="$HERE/results"
 MODE="vep"
@@ -64,9 +65,22 @@ if [[ "$MODE" == "vep" ]]; then
   esac
 fi
 
-INPUT_ABS="$(python -c 'import os,sys; print(os.path.abspath(sys.argv[1]))' "$INPUT")"
+if [[ "$MODE" == "vep" ]]; then
+  CACHE_DIR="$(grep -m1 'cache_dir:' "$HERE/config/config.yaml" \
+              | sed -E 's/.*cache_dir:[[:space:]]*"?([^"#]+)"?.*/\1/' \
+              | xargs)"
+  CACHE_DIR="${CACHE_DIR:-$HOME/vep_cache}"
+  CACHE_DIR="${CACHE_DIR/#\~/$HOME}"
+  if [[ ! -d "$CACHE_DIR" ]]; then
+    echo "ERROR: VEP cache not found: $CACHE_DIR" >&2
+    echo "       Install it once as described in README, or use --no-annotate." >&2
+    exit 1
+  fi
+fi
+
+INPUT_ABS="$("$PYTHON" -c 'import os,sys; print(os.path.abspath(sys.argv[1]))' "$INPUT")"
 mkdir -p "$OUT"
-OUT_ABS="$(python -c 'import os,sys; print(os.path.abspath(sys.argv[1]))' "$OUT")"
+OUT_ABS="$("$PYTHON" -c 'import os,sys; print(os.path.abspath(sys.argv[1]))' "$OUT")"
 
 SAMPLE="$(basename "$INPUT_ABS")"
 SAMPLE="${SAMPLE%.gz}"

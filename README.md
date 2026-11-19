@@ -26,6 +26,10 @@ so it runs the same way on every machine.
 That is the whole thing. No config editing, no Snakemake commands, no container
 commands.
 
+> Full annotation needs the one-time VEP cache (see [Installation](#installation)).
+> Without it, use `./vcf-annotate -i assets/example.vcf --no-annotate` — the
+> wrapper tells you exactly what is missing instead of failing deep inside Snakemake.
+
 A `results/` folder appears:
 
 ```
