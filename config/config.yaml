@@ -1,0 +1,29 @@
+# ---------------------------------------------------------------
+# vcf-annotate-smk — configuration
+# Edit this file, then: make dry-run  &&  make run
+# ---------------------------------------------------------------
+
+# Sample name. Input must be: {input_dir}/{sample}.vcf
+sample: example
+input_dir: assets
+results_dir: results
+
+# --- Variant filtering -----------------------------------------
+filter:
+  min_qual: 20
+  pass_only: true
+
+# --- Annotation -------------------------------------------------
+annotation:
+  # vep  = annotate with Ensembl VEP inside a container (needs cache, see README)
+  # skip = filter + table + summary only, no external data needed
+  mode: vep
+  assembly: GRCh38
+  cache_dir: "~/vep_cache"        # one-time download described in README
+  cache_version: "116"
+
+# --- Container images (Docker / Singularity / Apptainer) -------
+# These "docker://" URLs work with both `docker pull` and `apptainer pull`.
+containers:
+  bcftools: "docker://quay.io/biocontainers/bcftools:1.25--h118bc1c_1"
+  vep: "docker://quay.io/biocontainers/ensembl-vep:116.3--pl5321h663502d_0"

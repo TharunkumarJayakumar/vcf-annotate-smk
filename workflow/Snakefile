@@ -1,0 +1,20 @@
+# ===============================================================
+#  vcf-annotate-smk — main entry point
+#  Layout follows the nf-core / Nextflow convention:
+#    workflow/Snakefile   -> main.nf
+#    workflow/rules/      -> modules/
+#    config/config.yaml   -> nextflow.config
+#    workflow/scripts/    -> bin/
+#    assets/              -> assets/
+# ===============================================================
+
+configfile: "config/config.yaml"
+
+include: "rules/common.smk"
+include: "rules/filter.smk"
+include: "rules/annotate.smk"
+include: "rules/report.smk"
+
+
+rule all:
+    input: final_outputs()

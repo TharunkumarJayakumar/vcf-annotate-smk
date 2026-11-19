@@ -1,0 +1,25 @@
+##fileformat=VCFv4.2
+##FILTER=<ID=PASS,Description="All filters passed">
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Total Depth">
+##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency">
+##INFO=<ID=DB,Number=0,Type=Flag,Description="dbSNP membership">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##FORMAT=<ID=AD,Number=R,Type=Integer,Description="Allelic depths">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
+##reference=GRCh38
+##contig=<ID=chr1,length=248956422>
+##contig=<ID=chr3,length=198295559>
+##contig=<ID=chr7,length=159345973>
+##contig=<ID=chr10,length=133797422>
+##contig=<ID=chr12,length=133275309>
+##contig=<ID=chr13,length=114364328>
+##contig=<ID=chr17,length=83257441>
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	SAMPLE
+chr1	925952	rs671	A	G	50	PASS	DP=100;AF=0.5;DB	GT:AD:GQ	0/1:50,50:99
+chr7	140453136	rs113488022	A	T	80	PASS	DP=120;AF=0.4;DB	GT:AD:GQ	0/1:70,50:99
+chr17	7577538	rs28934578	C	T	75	PASS	DP=85;AF=0.3;DB	GT:AD:GQ	0/1:60,25:95
+chr17	41223094	rs80357713	G	A	90	PASS	DP=200;AF=0.5;DB	GT:AD:GQ	0/1:100,100:99
+chr13	32340300	rs80358720	A	T	65	PASS	DP=90;AF=0.45;DB	GT:AD:GQ	0/1:50,40:88
+chr3	178936091	rs121913279	A	G	15	PASS	DP=40;AF=0.2;DB	GT:AD:GQ	0/1:32,8:45
+chr12	25398284	rs121913529	C	T	95	PASS	DP=150;AF=0.33;DB	GT:AD:GQ	0/1:100,50:99
+chr10	89692905	rs121908161	C	T	10	PASS	DP=30;AF=0.1;DB	GT:AD:GQ	0/1:27,3:30
