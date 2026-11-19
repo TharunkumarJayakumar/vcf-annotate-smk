@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+# vcf-annotate — one command to filter and annotate a VCF.
+set -euo pipefail
+
+HERE="$(cd "$(dirname "$0")" && pwd)"
+INPUT=""
+OUT="$HERE/results"
+MODE="vep"
+THREADS=4
+
+usage() {
+  cat <<'EOF'
+vcf-annotate — filter and annotate a VCF in one command
+
+Usage:
+  ./vcf-annotate -i input.vcf [options]
+
+Options:
+  -i, --input FILE     Input VCF file (required)
+  -o, --output DIR     Output folder (default: ./results)
+      --no-annotate    Skip Ensembl VEP (filter + table + summary only)
+  -t, --threads N      CPU cores (default: 4)
+  -h, --help           Show this help
+
+Examples:
+  ./vcf-annotate -i assets/example.vcf --no-annotate
+  ./vcf-annotate -i my_sample.vcf -o my_results
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -i|--input)       INPUT="${2:-}"; shift 2 ;;
+    -o|--output)      OUT="${2:-}"; shift 2 ;;
+    --no-annotate)    MODE="skip"; shift ;;
+    -t|--threads)     THREADS="${2:-}"; shift 2 ;;
+    -h|--help)        usage; exit 0 ;;
+    *) echo "ERROR: unknown option: $1" >&2; usage >&2; exit 1 ;;
+  esac
+done
+
+if [[ -z "$INPUT" ]]; then
+  echo "ERROR: give an input VCF with -i" >&2
+  usage >&2
+  exit 1
+fi
+if [[ ! -f "$INPUT" ]]; then
+  echo "ERROR: input file not found: $INPUT" >&2
+  exit 1
+fi
+
+INPUT_ABS="$(python -c 'import os,sys; print(os.path.abspath(sys.argv[1]))' "$INPUT")"
+mkdir -p "$OUT"
+OUT_ABS="$(python -c 'import os,sys; print(os.path.abspath(sys.argv[1]))' "$OUT")"
+
+SAMPLE="$(basename "$INPUT_ABS")"
+SAMPLE="${SAMPLE%.gz}"
+SAMPLE="${SAMPLE%.vcf}"
+
+EXTRA=()
+if command -v apptainer >/dev/null 2>&1 || command -v singularity >/dev/null 2>&1; then
+  EXTRA+=(--use-singularity)
+fi
+
+echo "Input : $INPUT_ABS"
+echo "Output: $OUT_ABS"
+echo "Mode  : $MODE"
+echo
+
+cd "$HERE"
+VCF_ANNOTATE_INPUT="$INPUT_ABS" \
+VCF_ANNOTATE_SAMPLE="$SAMPLE" \
+VCF_ANNOTATE_OUT="$OUT_ABS" \
+VCF_ANNOTATE_MODE="$MODE" \
+  snakemake --cores "$THREADS" "${EXTRA[@]}"
+
+echo
+echo "Done. Output files:"
+ls -1 "$OUT_ABS"
