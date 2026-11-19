@@ -1,6 +1,6 @@
 # vcf-annotate-smk
 
-[![CI](https://github.com/Tharun-TJ/vcf-annotate-smk/actions/workflows/ci.yml/badge.svg)](https://github.com/Tharun-TJ/vcf-annotate-smk/actions/workflows/ci.yml)
+[![CI](https://github.com/TharunkumarJayakumar/vcf-annotate-smk/actions/workflows/ci.yml/badge.svg)](https://github.com/TharunkumarJayakumar/vcf-annotate-smk/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 A small, reproducible Snakemake workflow that takes a VCF file and produces a
@@ -55,7 +55,7 @@ needed to run the tests.
 ### Install from source
 
 ```bash
-git clone https://github.com/Tharun-TJ/vcf-annotate-smk.git
+git clone https://github.com/TharunkumarJayakumar/vcf-annotate-smk.git
 cd vcf-annotate-smk
 pip install snakemake pytest
 snakemake --version

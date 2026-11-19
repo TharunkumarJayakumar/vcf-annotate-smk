@@ -14,4 +14,4 @@ keywords:
   - snakemake
   - ensembl-vep
   - biocontainers
-repository-code: "https://github.com/Tharun-TJ/vcf-annotate-smk"
+repository-code: "https://github.com/TharunkumarJayakumar/vcf-annotate-smk"
