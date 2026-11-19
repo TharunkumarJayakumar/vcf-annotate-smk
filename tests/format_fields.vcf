@@ -1,0 +1,10 @@
+##fileformat=VCFv4.2
+##FILTER=<ID=PASS,Description="All filters passed">
+##INFO=<ID=P,Number=0,Type=Flag,Description="Result from pileup calling">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Read depth">
+##FORMAT=<ID=AF,Number=1,Type=Float,Description="Allele frequency">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	SAMPLE
+chr1	100	.	A	G	50	PASS	P	GT:DP:AF	0/1:30:0.5
+chr1	200	.	C	T	10	PASS	P	GT:DP:AF	1/1:20:1
+chr2	300	.	G	A	30	PASS	P	GT:DP:AF	0/1:15:0.4

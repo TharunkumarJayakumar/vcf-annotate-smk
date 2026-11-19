@@ -9,6 +9,12 @@ A small tool that filters a VCF, annotates variants with Ensembl VEP, and writes
 a clean table plus a short report. All analysis tools are pinned to containers,
 so it runs the same way on every machine.
 
+## Requirements
+
+- Linux or macOS, Python 3.9+, Snakemake 7+
+- **Apptainer/Singularity** (used automatically), **or** a local `bcftools` on `PATH`
+- Full annotation only: one-time Ensembl VEP GRCh38 cache (~28 GB)
+
 ---
 
 ## One command
@@ -124,6 +130,7 @@ Common examples:
 
 ## Table of contents
 
+- [Requirements](#requirements)
 - [Installation](#installation)
 - [Full annotation (VEP cache)](#full-annotation-vep-cache)
 - [Testing](#testing)
@@ -143,8 +150,9 @@ pip install snakemake pytest
 ./vcf-annotate --help
 ```
 
-Apptainer/Singularity or Docker is needed for the containerised tools. The
-wrapper uses containers automatically when it finds Apptainer on your system.
+The wrapper uses Apptainer/Singularity containers automatically when available.
+If neither is installed, install `bcftools` locally instead; there is nothing
+else to configure.
 
 ---
 
@@ -170,7 +178,8 @@ TSV and the Markdown report.
 make test
 ```
 
-Three unit tests plus a workflow dry-run. The same runs in GitHub Actions.
+Three unit tests, a workflow dry-run and a real end-to-end run on a VCF whose
+`DP`/`AF` are FORMAT fields. The same suite runs in GitHub Actions on every push.
 
 ---
 

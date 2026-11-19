@@ -10,8 +10,9 @@ setup: ## Pull container images and show the VEP cache command
 	@echo "VEP also needs a one-time GRCh38 cache:"
 	@echo "  vep_install -a cf -s homo_sapiens -y GRCh38 -c ~/vep_cache --CONVERT"
 
-test: ## Unit tests + DAG dry-run
+test: ## Unit tests, DAG dry-run and end-to-end wrapper test
 	bash tests/smoke.sh
+	bash tests/integration.sh
 
 dry-run: ## Print the workflow DAG without running it
 	snakemake -n --use-singularity --cores 1
