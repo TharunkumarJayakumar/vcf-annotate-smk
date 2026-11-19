@@ -1,4 +1,6 @@
 results/
+.vcf_input.*/
+.vcf_out.*/
 .snakemake/
 .pytest_cache/
 __pycache__/

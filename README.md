@@ -43,6 +43,9 @@ chr7    140453136 rs113488022 A  T    80    PASS    DP=120;AF=0.4
 chr17   7577538   rs28934578 C  T    75    PASS    DP=85;AF=0.3
 ```
 
+The table reads `DP` and `AF` from `INFO` when present, otherwise from
+`FORMAT` (as in Clair3 output). Missing values are written as `.`.
+
 ### Output
 
 `my_variants.variants.tsv`:

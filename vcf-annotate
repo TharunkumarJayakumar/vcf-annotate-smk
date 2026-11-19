@@ -72,6 +72,13 @@ SAMPLE="$(basename "$INPUT_ABS")"
 SAMPLE="${SAMPLE%.gz}"
 SAMPLE="${SAMPLE%.vcf}"
 
+# Containers only see the working directory, so stage input and output there.
+STAGE_DIR="$(mktemp -d "$HERE/.vcf_input.XXXXXX")"
+STAGE_OUT="$(mktemp -d "$HERE/.vcf_out.XXXXXX")"
+trap 'rm -rf "$STAGE_DIR" "$STAGE_OUT"' EXIT
+STAGED_INPUT="$STAGE_DIR/${SAMPLE}.vcf"
+cp "$INPUT_ABS" "$STAGED_INPUT"
+
 EXTRA=()
 if command -v apptainer >/dev/null 2>&1 || command -v singularity >/dev/null 2>&1; then
   EXTRA+=(--use-singularity)
@@ -83,11 +90,14 @@ echo "Mode  : $MODE"
 echo
 
 cd "$HERE"
-VCF_ANNOTATE_INPUT="$INPUT_ABS" \
+VCF_ANNOTATE_INPUT="$STAGED_INPUT" \
 VCF_ANNOTATE_SAMPLE="$SAMPLE" \
-VCF_ANNOTATE_OUT="$OUT_ABS" \
+VCF_ANNOTATE_OUT="$STAGE_OUT" \
 VCF_ANNOTATE_MODE="$MODE" \
   snakemake --cores "$THREADS" "${EXTRA[@]}"
+
+mkdir -p "$OUT_ABS"
+cp -f "$STAGE_OUT"/* "$OUT_ABS"/
 
 echo
 echo "Done. Output files:"
